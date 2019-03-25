@@ -71,9 +71,12 @@ public class UserService {
      */
     public User updateUser(Long id, UserBodyContainer userBodyContainer) throws ApiException {
         log.log(Level.INFO, String.format("Updating user: %s", id));
-        checkUserEmailExists(userBodyContainer.getEmail());
 
         User user = findUserOrThrowException(id);
+
+        if (!userBodyContainer.getEmail().equals(user.getEmail()))
+            checkUserEmailExists(userBodyContainer.getEmail());
+
         user.setEmail(userBodyContainer.getEmail());
         user.setFirstName(userBodyContainer.getFirstName());
         user.setLastName(userBodyContainer.getLastName());
